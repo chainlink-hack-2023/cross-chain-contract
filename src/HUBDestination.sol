@@ -35,8 +35,6 @@ contract HUBDestination is HUBBase {
         uint128 ErrorCode
     );
 
-    event PingMessage(uint256 pingValue);
-
     /* ========== CONSTRUCTOR  ========== */
     constructor() HUBBase() {
     }
@@ -130,7 +128,6 @@ contract HUBDestination is HUBBase {
     ) internal {
         bytes memory _message = abi.encode(_orderHash, msg.sender, _takerAmount, _takerAsset);
         bool forceUpdateGlobalExitRoot = true;
-        // Bridge ping message
         uint64 sourceCCIPChainSelector = chainSelectors[_sourceChainId];
         polygonZkEVMBridge.bridgeMessage(
             uint32(sourceCCIPChainSelector),

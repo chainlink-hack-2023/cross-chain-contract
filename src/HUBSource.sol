@@ -15,6 +15,7 @@ contract HUBSource is HUBBase {
     error WrongTargetChainId();
     error AllowanceNotEnough();
     error AppoveFailed();
+    error ExceedExpiry();
 
     /* ========== EVENTS ========== */
     event CreatedOrder(
@@ -40,7 +41,6 @@ contract HUBSource is HUBBase {
         address TakerAsset,
         uint128 ErrorCode
     );
-    event PingReceived(uint256 pingValue);
 
     /* ========== CONSTANT ========== */
     bytes32 public constant _TOKEN_PERMISSIONS_TYPEHASH = keccak256("TokenPermissions(address token,uint256 amount)");
@@ -226,7 +226,6 @@ contract HUBSource is HUBBase {
     ) internal {
         bytes memory _message = abi.encode(_maker, _takerAmount, _takerAsset, _errorCode);
         bool forceUpdateGlobalExitRoot = true;
-        // Bridge ping message
         uint64 targetCCIPChainSelector = chainSelectors[_targetChainId];
         polygonZkEVMBridge.bridgeMessage(
             uint32(targetCCIPChainSelector),
@@ -242,6 +241,11 @@ contract HUBSource is HUBBase {
         // Check target chainId
         if (_order.targetChainId == uint32(block.chainid)) {
             revert SameSourceAndDestination();
+        }
+
+        // Check expiry
+        if (_order.expiry < block.timestamp) {
+            revert ExceedExpiry();
         }
     }
 
@@ -267,6 +271,11 @@ contract HUBSource is HUBBase {
         if (_order.takerToken != takerAsset) {
             // Wrong taker token
             return 3;
+        }
+
+        // Check expiry
+        if (_order.expiry < block.timestamp) {
+            return 5;
         }
 
         return 0;
