@@ -434,3 +434,32 @@ deployed HUBDestination Address:
   deployed HUBDestination Address:
   0xd28daF64BF29C91380978132a5F3A94f6D58fd57
 ```
+## HUB Version14
+### Mumbai
+```
+  deployed HUBSource Address:
+  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
+  deployed HUBDestination Address:
+  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
+  deployed HUBDestination Address:
+  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
+  deployed HUBDestination Address:
+  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
+  deployed HUBDestination Address:
+  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
+```

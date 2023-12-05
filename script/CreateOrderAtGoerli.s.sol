@@ -15,7 +15,7 @@ contract CreateOrderAtGoerliScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85;
+        address _HUBSource = 0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e;
         address GOERLI_USDC = 0x07865c6E87B9F70255377e024ace6630C1Eaa37F;
         address ZKEVM_LINK = 0xa375fEfcA27a639361139718145dffc29A44cB6d;
 

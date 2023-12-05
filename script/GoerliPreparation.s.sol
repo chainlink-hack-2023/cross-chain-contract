@@ -16,8 +16,8 @@ contract GoerliPreparationScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85;
-        // address _HUBDestination = 0xd28daF64BF29C91380978132a5F3A94f6D58fd57;
+        address _HUBSource = 0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e;
+        // address _HUBDestination = 0xE1029eba9600E093f0A83601882d47a8Ecf5af03;
         address GOERLI_USDC = 0x07865c6E87B9F70255377e024ace6630C1Eaa37F;
 
         IERC20(GOERLI_USDC).approve(_HUBSource, type(uint).max);

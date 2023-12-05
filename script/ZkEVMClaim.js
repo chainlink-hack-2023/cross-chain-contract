@@ -9,7 +9,7 @@ const testnetBridgeAddress = '0xF6BEEeBB578e214CA9E23B0e9683454Ff88Ed2A7';
 const mekrleProofString = '/merkle-proof';
 const getClaimsFromAcc = '/bridges/';
 
-const HUBDestination = "0xd28daF64BF29C91380978132a5F3A94f6D58fd57"
+const HUBDestination = "0xE1029eba9600E093f0A83601882d47a8Ecf5af03"
 
 
 async function main() {
