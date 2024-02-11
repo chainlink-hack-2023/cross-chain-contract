@@ -13,9 +13,8 @@ const HUBSource = "0x7D573068bA00964A7Cc7C9E36380E494d406F381"
 
 
 async function main() {
-    // const ZkEVMProvider = new ethers.providers.JsonRpcProvider('https://rpc.public.zkevm-test.net');
-    const ZkEVMProvider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/eth_goerli');
-    // const ZkEVMProvider = new ethers.providers.JsonRpcProvider('https://eth-goerli.public.blastapi.io');
+    const ZkEVMProvider = new ethers.providers.JsonRpcProvider('https://rpc.public.zkevm-test.net');
+    // const ZkEVMProvider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/eth_goerli');
     let deployer;
     if (process.env.PRIVATE_KEY) {
         deployer = new ethers.Wallet(process.env.PRIVATE_KEY, ZkEVMProvider);

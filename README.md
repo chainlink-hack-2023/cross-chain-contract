@@ -22,23 +22,21 @@ forge test -vvv
 
 # Onchain Test Steps:
 ## CCIP onchain test steps:
-1. Do Preparation at Fuji (Approve Sender's FUJI_LINK to HUBSource and transfer enough FUJI_LINK to HUBSource)
-2. Do Preparation at Mumbai (Approve sender's MUMBAI_WETH to HUBDestination and transfer enough MUMBAI_LINK to HUBDestination)
-3. Create Order at Fuji
+1. Do Preparation at Fuji for maker (Approve Sender's FUJI_LINK to HUBSource and transfer enough FUJI_LINK to HUBSource)
+2. Do Preparation at Mumbai for taker (Approve sender's MUMBAI_WETH to HUBDestination and transfer enough MUMBAI_LINK to HUBDestination)
+3. Create Order at Fuji for maker
 4. If parameters changed in CreateOrderAtFuji, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtMumbai.s.sol
-5. Fulfill Order at Mumbai
+5. Fulfill Order at Mumbai for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtMumbai.s.sol)
 6. Check CCIP status at https://ccip.chain.link/ with fulfill order TX
 
 ## LYLX onchain test steps
-1. Do Preparation at Goerli (Approve Sender's GOERLI_USDC to HUBSource)
-2. Do Preparation at ZkEVM (Approve sender's ZkEVM_LINK to HUBDestination)
-3. Create Order at Goerli
-4. If parameters changed in CreateOrderAtGoerli, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtZkEVM.s.sol
-5. Fulfill Order at ZkEVM
+1. Do Preparation at ZkEVM for maker (Approve Sender's GOERLI_USDC to HUBDestination)
+2. Do Preparation at Goerli for taker (Approve sender's ZkEVM_LINK to HUBSource)
+3. Create Order at ZkEVM for maker
+4. If parameters changed in CreateOrderAtZkEVM, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtGoerli.s.sol
+5. Fulfill Order at Goerli for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtMumbai.s.sol)
 6. Check bridge status by https://bridge-api.public.zkevm-test.net/bridges/<HUDSource>
-7. Claim by: `node ./script/GoerliClaim.js`
-8. Check bridge status by https://bridge-api.public.zkevm-test.net/bridges/<HUBDestination>
-9. Claim by: `node ./script/ZkEVMClaim.js`
+7. Claim by: `node ./script/ZkEVMClaimSource.js`
 
 # Deploy
 ## Deploy to Mumbai
@@ -92,6 +90,19 @@ forge script script/CreateOrderAtGoerli.s.sol:CreateOrderAtGoerliScript --fork-u
 ```
 export PRIVATE_KEY=
 forge script script/FulfilOrderAtZkEVM.s.sol:FulfilOrderAtZkEVMScript --fork-url https://rpc.public.zkevm-test.net --broadcast --legacy
+```
+
+
+## Create Order at ZkEVM
+```
+export PRIVATE_KEY=
+forge script script/CreateOrderAtZkEVM.s.sol:CreateOrderAtZkEVMScript --fork-url https://rpc.public.zkevm-test.net --broadcast --legacy
+```
+
+## Fulfill Order at Goerli
+```
+export PRIVATE_KEY=
+forge script script/FulfilOrderAtGoerli.s.sol:FulfilOrderAtGoerliScript --fork-url https://rpc.ankr.com/eth_goerli --broadcast --legacy
 ```
 
 ## Token Approve at Fuji
@@ -462,4 +473,62 @@ deployed HUBDestination Address:
   0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
   deployed HUBDestination Address:
   0xE1029eba9600E093f0A83601882d47a8Ecf5af03
+```
+## HUB Version15
+### Mumbai
+```
+  deployed HUBSource Address:
+  0x4d69742D8a6b38b30FB4A430A564F47e718a40EB
+  deployed HUBDestination Address:
+  0xd6a85f08863aAC58CbcAcD337b513a7534C10F6E
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0x4d69742D8a6b38b30FB4A430A564F47e718a40EB
+  deployed HUBDestination Address:
+  0xd6a85f08863aAC58CbcAcD337b513a7534C10F6E
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0x4d69742D8a6b38b30FB4A430A564F47e718a40EB
+  deployed HUBDestination Address:
+  0xd6a85f08863aAC58CbcAcD337b513a7534C10F6E
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0x4d69742D8a6b38b30FB4A430A564F47e718a40EB
+  deployed HUBDestination Address:
+  0xd6a85f08863aAC58CbcAcD337b513a7534C10F6E
+```
+## HUB Version16
+### Mumbai
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
 ```

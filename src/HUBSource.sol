@@ -30,7 +30,8 @@ contract HUBSource is HUBBase {
         bytes32 OrderHash, 
         address TakerAddress, 
         uint128 TakerAmount, 
-        address TakerAsset
+        address TakerAsset,
+        uint128 errorCode
     );
 
     event TargetMessageSended(
@@ -70,10 +71,9 @@ contract HUBSource is HUBBase {
         bytes32 _orderHash, 
         address _takerAddress, 
         uint128 _takerAmount, 
-        address _takerAsset, 
-        bool CCIPMessageType
+        address _takerAsset
     ) external payable nonReentrant whenNotPaused {
-        _executeMessageReceived(_targetChainSelector, _orderHash, _takerAddress, _takerAmount, _takerAsset, CCIPMessageType);
+        _executeMessageReceived(_targetChainSelector, _orderHash, _takerAddress, _takerAmount, _takerAsset);
     }
 
     /* ========== INTERNAL ========== */
@@ -123,7 +123,7 @@ contract HUBSource is HUBBase {
         address _targetHUBAddress = abi.decode(message.sender, (address));
         (bytes32 _orderHash, address _takerAddress, uint128 _takerAmount, address _takerAsset) = abi.decode(message.data, (bytes32, address, uint128, address));
 
-        _executeMessageReceived(_targetChainSelector, _orderHash, _takerAddress, _takerAmount, _takerAsset, true);
+        uint128 _errorCode = _executeMessageReceived(_targetChainSelector, _orderHash, _takerAddress, _takerAmount, _takerAsset);
 
         emit TargetMessageReceived(
             _messageId,
@@ -132,7 +132,8 @@ contract HUBSource is HUBBase {
             _orderHash, 
             _takerAddress,
             _takerAmount,
-            _takerAsset
+            _takerAsset,
+            _errorCode
         );
     }
 
@@ -144,7 +145,7 @@ contract HUBSource is HUBBase {
     ) external payable override {
         (bytes32 _orderHash, address _takerAddress, uint128 _takerAmount, address _takerAsset) = abi.decode(data, (bytes32, address, uint128, address));
 
-        _executeMessageReceived(uint64(_targetChainSelector), _orderHash, _takerAddress, _takerAmount, _takerAsset, false);
+        uint128 _errorCode = _executeMessageReceived(uint64(_targetChainSelector), _orderHash, _takerAddress, _takerAmount, _takerAsset);
 
         emit TargetMessageReceived(
             "",
@@ -153,14 +154,15 @@ contract HUBSource is HUBBase {
             _orderHash, 
             _takerAddress,
             _takerAmount,
-            _takerAsset
+            _takerAsset,
+            _errorCode
         );
     }
 
     // receive message process
-    function _executeMessageReceived(uint64 _targetChainSelector, bytes32 _orderHash, address _takerAddress, uint128 _takerAmount, address _takerAsset, bool CCIPMessageType) internal {
+    function _executeMessageReceived(uint64 _targetChainSelector, bytes32 _orderHash, address _takerAddress, uint128 _takerAmount, address _takerAsset) internal returns (uint128 _errorCode) {
         LibOrder.Order storage _order = orders[_orderHash];
-        uint128 _errorCode = _receivedOrderValidation(_order, _targetChainSelector, _takerAddress, _takerAsset);
+        _errorCode = _receivedOrderValidation(_order, _targetChainSelector, _takerAddress, _takerAsset);
 
         uint128 _filledAmount = 0;
 
@@ -187,55 +189,56 @@ contract HUBSource is HUBBase {
             // transfer token
             _transferToken(_order, uint256(_filledAmount), _takerAddress);
         }
+        return _errorCode;
 
         // send message back to target chain
-        if (CCIPMessageType) {
-            _ccipMessageSend(_order.targetChainId, _order.maker, _takerAmount, _order.takerToken, _errorCode);
-        } else {
-            _zkBridgeMessageSend(_order.targetChainId, _order.maker, _takerAmount, _order.takerToken, _errorCode);
-        }
+        // if (CCIPMessageType) {
+        //     _ccipMessageSend(_order.targetChainId, _order.maker, _takerAmount, _order.takerToken, _errorCode);
+        // } else {
+        //     _zkBridgeMessageSend(_order.targetChainId, _order.maker, _takerAmount, _order.takerToken, _errorCode);
+        // }
     }
 
-    // CCIP message send
-    function _ccipMessageSend(uint32 _targetChainId, address _maker, uint128 _takerAmount, address _takerAsset, uint128 _errorCode) internal {
-        Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
-            receiver: abi.encode(HUBDestination),
-            data: abi.encode(_maker, _takerAmount, _takerAsset, _errorCode),
-            tokenAmounts: new Client.EVMTokenAmount[](0),
-            extraArgs: "",
-            feeToken: LINK
-        });
+    // // CCIP message send
+    // function _ccipMessageSend(uint32 _targetChainId, address _maker, uint128 _takerAmount, address _takerAsset, uint128 _errorCode) internal {
+    //     Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+    //         receiver: abi.encode(HUBDestination),
+    //         data: abi.encode(_maker, _takerAmount, _takerAsset, _errorCode),
+    //         tokenAmounts: new Client.EVMTokenAmount[](0),
+    //         extraArgs: "",
+    //         feeToken: LINK
+    //     });
 
-        uint64 targetCCIPChainSelector = chainSelectors[_targetChainId];
-        bytes32 messageId = IRouterClient(i_router).ccipSend(
-            targetCCIPChainSelector,
-            message
-        );
+    //     uint64 targetCCIPChainSelector = chainSelectors[_targetChainId];
+    //     bytes32 messageId = IRouterClient(i_router).ccipSend(
+    //         targetCCIPChainSelector,
+    //         message
+    //     );
 
-        emit TargetMessageSended(messageId, _targetChainId, _maker, _takerAmount, _takerAsset, _errorCode);
+    //     emit TargetMessageSended(messageId, _targetChainId, _maker, _takerAmount, _takerAsset, _errorCode);
 
-    }
+    // }
 
-    // Polygon zkBridge message send
-    function _zkBridgeMessageSend(
-        uint32 _targetChainId,
-        address _maker, 
-        uint128 _takerAmount, 
-        address _takerAsset, 
-        uint128 _errorCode
-    ) internal {
-        bytes memory _message = abi.encode(_maker, _takerAmount, _takerAsset, _errorCode);
-        bool forceUpdateGlobalExitRoot = true;
-        uint64 targetCCIPChainSelector = chainSelectors[_targetChainId];
-        polygonZkEVMBridge.bridgeMessage(
-            uint32(targetCCIPChainSelector),
-            HUBDestination,
-            forceUpdateGlobalExitRoot,
-            _message
-        );
+    // // Polygon zkBridge message send
+    // function _zkBridgeMessageSend(
+    //     uint32 _targetChainId,
+    //     address _maker, 
+    //     uint128 _takerAmount, 
+    //     address _takerAsset, 
+    //     uint128 _errorCode
+    // ) internal {
+    //     bytes memory _message = abi.encode(_maker, _takerAmount, _takerAsset, _errorCode);
+    //     bool forceUpdateGlobalExitRoot = true;
+    //     uint64 targetCCIPChainSelector = chainSelectors[_targetChainId];
+    //     polygonZkEVMBridge.bridgeMessage(
+    //         uint32(targetCCIPChainSelector),
+    //         HUBDestination,
+    //         forceUpdateGlobalExitRoot,
+    //         _message
+    //     );
 
-        emit TargetMessageSended("", _targetChainId, _maker, _takerAmount, _takerAsset, _errorCode);
-    }
+    //     emit TargetMessageSended("", _targetChainId, _maker, _takerAmount, _takerAsset, _errorCode);
+    // }
 
     function _createdOrderValidation(LibOrder.Order memory _order) internal view {
         // Check target chainId

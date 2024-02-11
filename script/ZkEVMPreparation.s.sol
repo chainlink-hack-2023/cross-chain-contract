@@ -16,11 +16,11 @@ contract ZkEVMPreparationScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        // address _HUBSource = 0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e;
-        address _HUBDestination = 0xE1029eba9600E093f0A83601882d47a8Ecf5af03;
+        address _HUBSource = 0x7D573068bA00964A7Cc7C9E36380E494d406F381;
+        // address _HUBDestination = 0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F;
         address ZkEVM_LINK = 0xa375fEfcA27a639361139718145dffc29A44cB6d;
 
-        IERC20(ZkEVM_LINK).approve(_HUBDestination, type(uint).max);
+        IERC20(ZkEVM_LINK).approve(_HUBSource, type(uint).max);
 
         console.log("DONE!");
         vm.stopBroadcast();

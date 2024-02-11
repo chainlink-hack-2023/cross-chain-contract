@@ -7,7 +7,7 @@ import "src/HUBDestination.sol";
 import "src/libraries/LibOrder.sol";
 import {ISignatureTransfer} from "src/interfaces/ISignatureTransfer.sol";
 
-contract CreateOrderAtFujiScript is Script {
+contract CreateOrderAtZkEVMScript is Script {
     function setUp() public {}
 
     function run() public {
@@ -16,8 +16,8 @@ contract CreateOrderAtFujiScript is Script {
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
         address _HUBSource = 0x7D573068bA00964A7Cc7C9E36380E494d406F381;
-        address FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
-        address MUMBAI_USDC = 0x0FA8781a83E46826621b3BC094Ea2A0212e71B23;
+        address GOERLI_USDC = 0x07865c6E87B9F70255377e024ace6630C1Eaa37F;
+        address ZKEVM_LINK = 0xa375fEfcA27a639361139718145dffc29A44cB6d;
 
         bytes memory _calldata = "0x";
 
@@ -26,15 +26,15 @@ contract CreateOrderAtFujiScript is Script {
 
         console.log("Generate Order");
         LibOrder.Order memory order;
-        order.makerToken = FUJI_LINK;
-        order.makerAmount = 0.001 ether;
-        order.takerToken = MUMBAI_USDC;
-        order.takerAmount = 0.1 * 1e6;
+        order.makerToken = ZKEVM_LINK;
+        order.makerAmount = 0.1 ether;
+        order.takerToken = GOERLI_USDC;
+        order.takerAmount = 1 * 1e6;
         order.maker = address(deployerAddress);
         order.expiry = uint64(1800537678);
         order.taker = address(0);
-        order.salt = 3;
-        order.targetChainId = 80001;
+        order.salt = 2;
+        order.targetChainId = 5;
         order.target = address(deployerAddress);
         order.permitSignature = _calldata;
 

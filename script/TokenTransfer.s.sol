@@ -16,8 +16,8 @@ contract TokenTransferScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12;
-        address _HUBDestination = 0x414d60E05439816B6F04bB6D326403B4799013b0;
+        address _HUBSource = 0x7D573068bA00964A7Cc7C9E36380E494d406F381;
+        address _HUBDestination = 0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F;
         address FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         address MUMBAI_LINK = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
 
