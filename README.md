@@ -34,7 +34,7 @@ forge test -vvv
 2. Do Preparation at Goerli for taker (Approve sender's ZkEVM_LINK to HUBSource)
 3. Create Order at ZkEVM for maker
 4. If parameters changed in CreateOrderAtZkEVM, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtGoerli.s.sol
-5. Fulfill Order at Goerli for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtMumbai.s.sol)
+5. Fulfill Order at Goerli for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtGoerli.s.sol)
 6. Check bridge status by https://bridge-api.public.zkevm-test.net/bridges/<HUDSource>
 7. Claim by: `node ./script/ZkEVMClaimSource.js`
 
