@@ -85,7 +85,6 @@ contract HUBDestination is HUBBase {
         }
 
         // transfer takerAsset into this contract
-        IERC20(takerAsset).approve(address(this), takerAmount);
         IERC20(takerAsset).transferFrom(msg.sender, address(this), takerAmount);
 
         if (IERC20(takerAsset).balanceOf(address(this)) < (totalTakerAmount[takerAsset] + uint256(takerAmount))) {
