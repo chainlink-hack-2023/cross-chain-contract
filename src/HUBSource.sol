@@ -103,7 +103,10 @@ contract HUBSource is HUBBase {
             order.targetChainId = _order.targetChainId;
             order.target = _order.target;
             order.permitSignature = _order.permitSignature;
-        }
+        } 
+
+        // transfer maker token into this
+        IERC20(_order.makerToken).transferFrom(_order.maker, address(this), _order.makerAmount);
 
         emit CreatedOrder(
             _orderHash,
@@ -175,6 +178,11 @@ contract HUBSource is HUBBase {
                 // Order filled
                 _errorCode = 4;
             }
+
+            uint128 notFilledAmount = _order.makerAmount - _orderInfo.takerTokenFilledAmount;
+            if (_filledAmount > notFilledAmount) {
+                _filledAmount = notFilledAmount;
+            }
             
             _orderInfo.takerTokenFilledAmount += _filledAmount;
 
@@ -187,7 +195,8 @@ contract HUBSource is HUBBase {
 
         if (_errorCode == 0 ) {
             // transfer token
-            _transferToken(_order, uint256(_filledAmount), _takerAddress);
+            IERC20(_order.makerToken).approve(address(this), type(uint).max);
+            IERC20(_order.makerToken).transferFrom(address(this), _takerAddress, _filledAmount);
         }
         return _errorCode;
 
@@ -282,25 +291,5 @@ contract HUBSource is HUBBase {
         }
 
         return 0;
-    }
-
-    function _transferToken(LibOrder.Order storage _order, uint256 amount, address _takerAddress) internal {
-        
-        // check allowance
-        uint256 allowanceAmount = IERC20(_order.makerToken).allowance(_order.maker, address(this));
-        if (allowanceAmount < amount) {
-            // approve maker token
-            (bool _success, ) = _order.makerToken.call(_order.permitSignature);
-            if (!_success) {
-                revert AppoveFailed();
-            }
-        } 
-
-        if (_order.taker != address(0)) {
-            IERC20(_order.makerToken).transferFrom(_order.maker, _order.taker, amount);
-        } else {
-            IERC20(_order.makerToken).transferFrom(_order.maker, _takerAddress, amount);
-        }
-
-    }   
+    }  
 }

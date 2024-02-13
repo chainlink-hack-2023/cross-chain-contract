@@ -30,9 +30,6 @@ contract HUBSourceTest is Test {
         FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         MUMBAI_WETH = 0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa;
 
-        TestERC20 _ERC20 = new TestERC20();
-        bytes memory _ERC20Code = address(_ERC20).code;
-        vm.etch(LINK, _ERC20Code);
 
         msgSenderPrivateKey = 0x12341234;
         msgSender = vm.addr(msgSenderPrivateKey);
@@ -40,8 +37,17 @@ contract HUBSourceTest is Test {
         console.log(msgSender);
 
         vm.prank(msgSender, msgSender);
-        _HUBSource = new HUBSource();
+        TestERC20 _ERC20 = new TestERC20();
+        bytes memory _ERC20Code = address(_ERC20).code;
+        vm.etch(FUJI_LINK, _ERC20Code);
         vm.prank(msgSender, msgSender);
+        TestERC20(FUJI_LINK).mint(msgSender, 1000 ether);
+
+        vm.prank(msgSender, msgSender);
+        _HUBSource = new HUBSource();
+
+        vm.prank(msgSender, msgSender);
+        TestERC20(FUJI_LINK).approve(address(_HUBSource), type(uint).max);
         // _HUBSource.setCCIPRoouterAndLink(CCIPROUTER, LINK);
         // _HUBSource.setPolygonZkEVMBridge(polygonZkEVMBridge);
 
@@ -58,7 +64,7 @@ contract HUBSourceTest is Test {
         order.makerAmount = 0.01 ether;
         order.takerToken = MUMBAI_WETH;
         order.takerAmount = 0.00001 ether;
-        order.maker = address(this);
+        order.maker = msgSender;
         order.expiry = uint64(1800537678);
         order.taker = address(0);
         order.salt = 5;

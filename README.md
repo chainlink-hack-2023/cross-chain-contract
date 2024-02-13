@@ -532,3 +532,61 @@ deployed HUBDestination Address:
   deployed HUBDestination Address:
   0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
 ```
+## HUB Version17
+### Mumbai
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0x7D573068bA00964A7Cc7C9E36380E494d406F381
+  deployed HUBDestination Address:
+  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0x48cba1C2fF4335484a0f95Cd87743A7B0b41e0a4
+  deployed HUBDestination Address:
+  0x5461EdFc4dD52cF348Ae0284619BE5353158f774
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0x48cba1C2fF4335484a0f95Cd87743A7B0b41e0a4
+  deployed HUBDestination Address:
+  0x5461EdFc4dD52cF348Ae0284619BE5353158f774
+```
+## HUB Version18
+### Mumbai
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
