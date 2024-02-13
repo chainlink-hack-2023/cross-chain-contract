@@ -42,7 +42,7 @@ async function main() {
 
     for (let i = 0; i < depositsArray.length; i++) {
         const currentDeposit = depositsArray[i];
-        if (currentDeposit.ready_for_claim) {
+        if (currentDeposit.ready_for_claim && (currentDeposit.claim_tx_hash === "")) {
             const proofAxios = await axios.get(mekrleProofString, {
                 params: { deposit_cnt: currentDeposit.deposit_cnt, net_id: currentDeposit.orig_net },
             });
