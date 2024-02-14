@@ -5,4 +5,5 @@ libs = ["lib"]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
 
-solc_version="0.8.10"
+solc_version="0.8.11"
+ignored_error_codes = [5667]

@@ -172,7 +172,7 @@ contract HUBDestination is HUBBase {
     }
 
     // // CCIP receive message callback
-    function _ccipReceive(Client.Any2EVMMessage memory message) internal override {
+    function _ccipReceive(Client.Any2EVMMessage memory message) internal pure override {
         return;
     }
 
@@ -190,7 +190,7 @@ contract HUBDestination is HUBBase {
         address _takerAddress,
         uint128 _takerAmount, 
         address _takerAsset
-    ) external payable {
+    ) public payable {
         return;
     }
 }

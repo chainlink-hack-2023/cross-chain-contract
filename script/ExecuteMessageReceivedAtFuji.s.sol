@@ -16,8 +16,8 @@ contract ExecuteMessageReceivedAtFujiScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0x2db63ba5F9101F5017a33922AE1c3C329e516625;
-        // address _HUBDestination = 0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E;
+        address _HUBSource = 0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1;
+        // address _HUBDestination = 0xAC639a69B329A01E727188f8d90ECeA3f6189243;
 
         uint64 _targetChainSelector = 12532609583862916517;
         bytes32 _orderHash = 0xb63e6fced773b81498ca903a99cc36255b21f67bfc86663c7a0e855dff89f099;

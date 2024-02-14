@@ -16,8 +16,8 @@ contract FujiPreparationScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0x2db63ba5F9101F5017a33922AE1c3C329e516625;
-        // address _HUBDestination = 0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E;
+        address _HUBSource = 0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1;
+        // address _HUBDestination = 0xAC639a69B329A01E727188f8d90ECeA3f6189243;
         address FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
 
         IERC20(FUJI_LINK).approve(_HUBSource, type(uint).max);

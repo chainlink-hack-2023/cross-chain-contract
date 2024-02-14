@@ -15,9 +15,9 @@ contract CreateOrderAtSepoliaScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0x2db63ba5F9101F5017a33922AE1c3C329e516625;
+        address _HUBSource = 0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1;
         address Sepolia_USDC = 0xbe72E441BF55620febc26715db68d3494213D8Cb;
-        address OPSepolia_WETH = 0xa375fEfcA27a639361139718145dffc29A44cB6d;
+        address OPSepolia_WETH = 0x74A4A85C611679B73F402B36c0F84A7D2CcdFDa3;
 
         bytes memory _calldata = "0x";
 

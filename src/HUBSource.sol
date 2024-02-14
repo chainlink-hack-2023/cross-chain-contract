@@ -179,7 +179,7 @@ contract HUBSource is HUBBase {
             _takerAddress,
             _takerAmount,
             _takerAsset,
-            _errorCode
+            0
         );
     }
 

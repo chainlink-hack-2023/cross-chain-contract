@@ -17,7 +17,7 @@ contract HUBScript is Script {
         address Messager = 0x58Cc85b8D04EA49cC6DBd3CbFFd00B4B8D6cb3ef; // Sepolia Messager
 
 
-        bytes32 _salt = "HUB2";
+        bytes32 _salt = "HUB5";
         HUBSource _HUBSource = new HUBSource{salt: _salt}();
         HUBDestination _HUBDestination = new HUBDestination{salt: _salt}();
 
@@ -31,13 +31,13 @@ contract HUBScript is Script {
         console.log("Set HUBSource MessagerAndReceiver.");
         _HUBSource.setMessagerAndReceiver(Messager, address(_HUBDestination));
         console.log("Set HUBSource ChainSelectors.");
-        _HUBSource.setChainSelectors(11155420, 1);
+        _HUBSource.setChainSelectors(11155420, 0);
         console.log("Set HUBSource HUBDestination.");
         _HUBSource.setHUBDestination(address(_HUBDestination));
         console.log("Set HUBDestination MessagerAndReceiver.");
         _HUBDestination.setMessagerAndReceiver(Messager, address(_HUBSource));
         console.log("Set HUBDestination ChainSelectors.");
-        _HUBDestination.setChainSelectors(11155420, 1);
+        _HUBDestination.setChainSelectors(11155420, 0);
         console.log("Set HUBDestination HUBSource.");
         _HUBDestination.setHUBSource(address(_HUBSource));
 

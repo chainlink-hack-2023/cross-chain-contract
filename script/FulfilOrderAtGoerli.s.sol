@@ -15,7 +15,7 @@ contract FulfilOrderAtGoerliScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBDestination = 0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E;
+        address _HUBDestination = 0xAC639a69B329A01E727188f8d90ECeA3f6189243;
         // address FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         // address MUMBAI_WETH = 0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa;
         // address ZKEVM_LINK = 0xa375fEfcA27a639361139718145dffc29A44cB6d;

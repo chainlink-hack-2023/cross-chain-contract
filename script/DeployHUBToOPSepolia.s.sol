@@ -17,7 +17,7 @@ contract HUBScript is Script {
         address Messager = 0x4200000000000000000000000000000000000007; // Sepolia Messager
 
 
-        bytes32 _salt = "HUB2";
+        bytes32 _salt = "HUB5";
         HUBSource _HUBSource = new HUBSource{salt: _salt}();
         HUBDestination _HUBDestination = new HUBDestination{salt: _salt}();
 

@@ -39,11 +39,11 @@ forge test -vvv
 7. Claim by: `node ./script/ZkEVMClaimSource.js`
 
 ## Sepolia->OP Sepolia onchain test steps
-1. Do Preparation at Sepolia for maker (Approve Sender's Sepolia_USDC to HUBSource)
-2. Do Preparation at OPSepolia for taker (Approve sender's OPSepolia_WETH to HUBDestination)
-3. Create Order at Sepolia for maker
-4. If parameters changed in CreateOrderAtSepolia, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtOPSepolia.s.sol
-5. Fulfill Order at OPSepolia for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtGoerli.s.sol)
+1. Do Preparation at OPSepolia for maker (Approve Sender's OPSepolia_WETH to HUBSource)
+2. Do Preparation at Sepolia for taker (Approve sender's Sepolia_USDC to HUBDestination)
+3. Create Order at OPSepolia for maker
+4. If parameters changed in CreateOrderAtOPSepolia, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtSepolia.s.sol
+5. Fulfill Order at Sepolia for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtSepolia.s.sol)
 
 
 # Deploy
@@ -70,12 +70,12 @@ forge script script/DeployHUBToGoerli.s.sol:HUBScript --fork-url https://rpc.ank
 ## Deploy Sepolia
 ```
 export PRIVATE_KEY=
-forge script script/DeployHUBToSepolia.s.sol:HUBScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+forge script script/DeployHUBToSepolia.s.sol:HUBScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
 ```
 ## Deploy OPSepolia
 ```
 export PRIVATE_KEY=
-forge script script/DeployHUBToOPSepolia.s.sol:HUBScript --fork-url https://sepolia.optimism.io --broadcast --legacy
+forge script script/DeployHUBToOPSepolia.s.sol:HUBScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
 ```
 
 # Deploy Permit2 to PolygonZkEVM
@@ -123,16 +123,16 @@ export PRIVATE_KEY=
 forge script script/FulfilOrderAtGoerli.s.sol:FulfilOrderAtGoerliScript --fork-url https://rpc.ankr.com/eth_goerli --broadcast --legacy
 ```
 
-## Create Order at Sepolia
+## Create Order at OPSepolia
 ```
 export PRIVATE_KEY=
-forge script script/CreateOrderAtSepolia.s.sol:CreateOrderAtSepoliaScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+forge script script/CreateOrderAtOPSepolia.s.sol:CreateOrderAtOPSepoliaScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
 ```
 
-## Fulfill Order at OPSepolia
+## Fulfill Order at Sepolia
 ```
 export PRIVATE_KEY=
-forge script script/FulfilOrderAtOPSepolia.s.sol:FulfilOrderAtOPSepoliaScript --fork-url https://sepolia.optimism.io --broadcast --legacy
+forge script script/FulfilOrderAtSepolia.s.sol:FulfilOrderAtSepoliaScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
 ```
 
 ## Token Approve at Fuji
@@ -186,12 +186,12 @@ forge script script/ZkEVMPreparation.s.sol:ZkEVMPreparationScript --fork-url htt
 ## Preparation at Sepolia
 ```
 export PRIVATE_KEY=
-forge script script/SepoliaPreparation.s.sol:SepoliaPreparationScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+forge script script/SepoliaPreparation.s.sol:SepoliaPreparationScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
 ```
 ## Preparation at OPSepolia
 ```
 export PRIVATE_KEY=
-forge script script/OPSepoliaPreparation.s.sol:OPSepoliaPreparationScript --fork-url https://sepolia.optimism.io --broadcast --legacy
+forge script script/OPSepoliaPreparation.s.sol:OPSepoliaPreparationScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
 ```
 
 ## ExecuteMessageReceivedAtFuji
@@ -216,7 +216,16 @@ forge script script/ExecuteMessageReceivedAtGoerli.s.sol:ExecuteMessageReceivedA
 export PRIVATE_KEY=
 forge script script/ExecuteMessageReceivedAtZkEVM.s.sol:ExecuteMessageReceivedAtZkEVMScript --fork-url https://rpc.public.zkevm-test.net --broadcast --legacy
 ```
+## ExecuteMessageReceivedAtOPSepolia
+```
+export PRIVATE_KEY=
+forge script script/ExecuteMessageReceivedAtOPSepolia.s.sol:ExecuteMessageReceivedAtOPSepoliaScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
+```
 
+## Status Check at OPSepolia
+```
+forge script script/OPSepoliaStatusCheck.s.sol:OPSepoliaStatusCheckScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --legacy -vvv
+```
 
 # Contract address in frontend
 https://github.com/sydweb3/cow-sdk/blob/main/networks.json
@@ -224,297 +233,6 @@ https://github.com/sydweb3/cow-sdk/blob/main/networks.json
 
 
 # Deployed Contracts
-## HUB Version1
-```
-Mumbai: 0xabde11230d6fbe5d9a6e4b8dae791feeee760367
-Fuji: 0xf770e009ec3af5c103f868509284b87bca08ed77
-```
-## HUB Version2
-### Mumbai
-```
-deployed _HUBSourceAddress:
-0xa3a1eD665F5E0766A719c236c93554B0255B69B5
-deployed _HUBDestinationAddress:
-0x4c1f94Ccb77Fc3393250c0f9e5D1cB16BD997e4b
-```
-## HUB Version3
-### Mumbai
-```
-deployed HUBSource Address:
-0x55C4A21c42859a0f15dAa2C25f6e67617c13930E
-deployed HUBDestination Address:
-0x352C8AD43Fb9f0Da22559A3589D1BF9B72fbA4c6
-```
-### Fuji
-```
-deployed HUBSource Address:
-0x55C4A21c42859a0f15dAa2C25f6e67617c13930E
-deployed HUBDestination Address:
-0x352C8AD43Fb9f0Da22559A3589D1BF9B72fbA4c6
-```
-### ZkEVM
-```
-deployed HUBSource Address:
-0x55C4A21c42859a0f15dAa2C25f6e67617c13930E
-deployed HUBDestination Address:
-0x352C8AD43Fb9f0Da22559A3589D1BF9B72fbA4c6
-```
-### Goerli
-```
-deployed HUBSource Address:
-0x55C4A21c42859a0f15dAa2C25f6e67617c13930E
-deployed HUBDestination Address:
-0x352C8AD43Fb9f0Da22559A3589D1BF9B72fbA4c6
-```
-## HUB Version4
-### Mumbai
-```
-  deployed HUBSource Address:
-  0x645057AFFc4e1EA858DeaE1baCbdB1Ff8c15cf17
-  deployed HUBDestination Address:
-  0x1C7ddf40b4Fb3160927AD43CCbE628954B650945
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0x645057AFFc4e1EA858DeaE1baCbdB1Ff8c15cf17
-  deployed HUBDestination Address:
-  0x1C7ddf40b4Fb3160927AD43CCbE628954B650945
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0x645057AFFc4e1EA858DeaE1baCbdB1Ff8c15cf17
-  deployed HUBDestination Address:
-  0x1C7ddf40b4Fb3160927AD43CCbE628954B650945
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0x645057AFFc4e1EA858DeaE1baCbdB1Ff8c15cf17
-  deployed HUBDestination Address:
-  0x1C7ddf40b4Fb3160927AD43CCbE628954B650945
-```
-## HUB Version5
-### Mumbai
-```
-  deployed HUBSource Address:
-  0x9b65F4c28dF06f700660466faCbD74d887a500c3
-  deployed HUBDestination Address:
-  0x6D068261D12E11E2459C9Cf30127CA49B82834d7
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0x9b65F4c28dF06f700660466faCbD74d887a500c3
-  deployed HUBDestination Address:
-  0x6D068261D12E11E2459C9Cf30127CA49B82834d7
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0x9b65F4c28dF06f700660466faCbD74d887a500c3
-  deployed HUBDestination Address:
-  0x6D068261D12E11E2459C9Cf30127CA49B82834d7
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0x9b65F4c28dF06f700660466faCbD74d887a500c3
-  deployed HUBDestination Address:
-  0x6D068261D12E11E2459C9Cf30127CA49B82834d7
-```
-## HUB Version6
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xaC45d2a7B4AAe6a844b6Ca62e9d2E45638349613
-  deployed HUBDestination Address:
-  0x1C47AA5527dcfBD7563cd3A875227DdC091914d7
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xaC45d2a7B4AAe6a844b6Ca62e9d2E45638349613
-  deployed HUBDestination Address:
-  0x1C47AA5527dcfBD7563cd3A875227DdC091914d7
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xaC45d2a7B4AAe6a844b6Ca62e9d2E45638349613
-  deployed HUBDestination Address:
-  0x1C47AA5527dcfBD7563cd3A875227DdC091914d7
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xaC45d2a7B4AAe6a844b6Ca62e9d2E45638349613
-  deployed HUBDestination Address:
-  0x1C47AA5527dcfBD7563cd3A875227DdC091914d7
-```
-## HUB Version7
-### Mumbai
-```
-  deployed HUBSource Address:
-  0x807A36fa511FcA74f9AdFeaBbC751bB6bb056a3b
-  deployed HUBDestination Address:
-  0x90dCb62b3A118333EB5F1A28DA2d114c366B0434
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0x807A36fa511FcA74f9AdFeaBbC751bB6bb056a3b
-  deployed HUBDestination Address:
-  0x90dCb62b3A118333EB5F1A28DA2d114c366B0434
-```
-## HUB Version8
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xbc86a4F1141bDE9E813903a166f2c9759322E5C6
-  deployed HUBDestination Address:
-  0x2356CA142e276B7049a093Ed6b19667E42afB45f
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xbc86a4F1141bDE9E813903a166f2c9759322E5C6
-  deployed HUBDestination Address:
-  0x2356CA142e276B7049a093Ed6b19667E42afB45f
-```
-## HUB Version9
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x33368768922E11EbBbC08Af958aC9ca3171A62b6
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x33368768922E11EbBbC08Af958aC9ca3171A62b6
-```
-## HUB Version10
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x414d60E05439816B6F04bB6D326403B4799013b0
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x414d60E05439816B6F04bB6D326403B4799013b0
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x414d60E05439816B6F04bB6D326403B4799013b0
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xF9C32eb91aFa23A2fA4656A3a30611EEd3155F12
-  deployed HUBDestination Address:
-  0x414d60E05439816B6F04bB6D326403B4799013b0
-```
-## HUB Version11
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xF559789b2ADeD227167fd21565b551cB7C858A41
-  deployed HUBDestination Address:
-  0x4731e98235FC2660Cfdd489CE864C703b9E73FEc
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xF559789b2ADeD227167fd21565b551cB7C858A41
-  deployed HUBDestination Address:
-  0x4731e98235FC2660Cfdd489CE864C703b9E73FEc
-```
-## HUB Version12 (ZKEVM PING MESSAGE)
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xd85e84BD9dF29e9cD10e06ac16dfbdC17426794E
-  deployed HUBDestination Address:
-  0x70a948027D14756768915d87142dF48d17876b15
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xd85e84BD9dF29e9cD10e06ac16dfbdC17426794E
-  deployed HUBDestination Address:
-  0x70a948027D14756768915d87142dF48d17876b15
-```
-## HUB Version13
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85
-  deployed HUBDestination Address:
-  0xd28daF64BF29C91380978132a5F3A94f6D58fd57
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85
-  deployed HUBDestination Address:
-  0xd28daF64BF29C91380978132a5F3A94f6D58fd57
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85
-  deployed HUBDestination Address:
-  0xd28daF64BF29C91380978132a5F3A94f6D58fd57
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xab2F8f89Dc933712ae5Eb6348Fc9F67c605cBD85
-  deployed HUBDestination Address:
-  0xd28daF64BF29C91380978132a5F3A94f6D58fd57
-```
-## HUB Version14
-### Mumbai
-```
-  deployed HUBSource Address:
-  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
-  deployed HUBDestination Address:
-  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
-  deployed HUBDestination Address:
-  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
-  deployed HUBDestination Address:
-  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0xf57c41302BbD709F1E3eAa154E7Cc4C361671f7e
-  deployed HUBDestination Address:
-  0xE1029eba9600E093f0A83601882d47a8Ecf5af03
-```
 ## HUB Version15
 ### Mumbai
 ```
@@ -543,35 +261,6 @@ deployed HUBDestination Address:
   0x4d69742D8a6b38b30FB4A430A564F47e718a40EB
   deployed HUBDestination Address:
   0xd6a85f08863aAC58CbcAcD337b513a7534C10F6E
-```
-## HUB Version16
-### Mumbai
-```
-  deployed HUBSource Address:
-  0x7D573068bA00964A7Cc7C9E36380E494d406F381
-  deployed HUBDestination Address:
-  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
-```
-### Fuji
-```
-  deployed HUBSource Address:
-  0x7D573068bA00964A7Cc7C9E36380E494d406F381
-  deployed HUBDestination Address:
-  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
-```
-### ZkEVM
-```
-  deployed HUBSource Address:
-  0x7D573068bA00964A7Cc7C9E36380E494d406F381
-  deployed HUBDestination Address:
-  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
-```
-### Goerli
-```
-  deployed HUBSource Address:
-  0x7D573068bA00964A7Cc7C9E36380E494d406F381
-  deployed HUBDestination Address:
-  0x0Cb9cf26d4Bc141a066A3AcDf3ff51Be6Fb7899F
 ```
 ## HUB Version17
 ### Mumbai
@@ -630,4 +319,122 @@ deployed HUBDestination Address:
   0x2db63ba5F9101F5017a33922AE1c3C329e516625
   deployed HUBDestination Address:
   0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+## HUB Version18
+### Mumbai
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0x2db63ba5F9101F5017a33922AE1c3C329e516625
+  deployed HUBDestination Address:
+  0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E
+```
+### Sepolia
+```
+  deployed HUBSource Address:
+  0x7bF9b7d581e33BFbf047db57dd5b3722ef31eD78
+  deployed HUBDestination Address:
+  0x396b6B1EDCc46F104D97D6fABE806C97c1dB273D
+```
+### OPSepolia
+```
+  deployed HUBSource Address:
+  0x7bF9b7d581e33BFbf047db57dd5b3722ef31eD78
+  deployed HUBDestination Address:
+  0x396b6B1EDCc46F104D97D6fABE806C97c1dB273D
+```
+
+## HUB Version19
+### Sepolia
+```
+  deployed HUBSource Address:
+  0x11Ad41e37a4a5354e6660A344373F9c6c30Faff2
+  deployed HUBDestination Address:
+  0x2d7FF7ED9ad1eb27e4f05C08b10752c981860292
+```
+### OPSepolia
+```
+  deployed HUBSource Address:
+  0x11Ad41e37a4a5354e6660A344373F9c6c30Faff2
+  deployed HUBDestination Address:
+  0x2d7FF7ED9ad1eb27e4f05C08b10752c981860292
+```
+
+## HUB Version20
+### Sepolia
+```
+  deployed HUBSource Address:
+  0x0ec146c8cf1bA19c809b8c9c1FC8F2f598a053A9
+  deployed HUBDestination Address:
+  0x50C275d455F77ef5BBB144067d9BA02bd55Be1e3
+```
+### OPSepolia
+```
+  deployed HUBSource Address:
+  0x0ec146c8cf1bA19c809b8c9c1FC8F2f598a053A9
+  deployed HUBDestination Address:
+  0x50C275d455F77ef5BBB144067d9BA02bd55Be1e3
+```
+## HUB Version21
+### Mumbai
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+### Fuji
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+### ZkEVM
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+### Goerli
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+### Sepolia
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+### OPSepolia
+```
+  deployed HUBSource Address:
+  0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
+  deployed HUBDestination Address:
+  0xAC639a69B329A01E727188f8d90ECeA3f6189243
 ```

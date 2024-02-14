@@ -16,7 +16,7 @@ contract HUBScript is Script {
         address LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         // address polygonZkEVMBridge = 0xF6BEEeBB578e214CA9E23B0e9683454Ff88Ed2A7; // zkEVM
 
-        bytes32 _salt = "HUB2";
+        bytes32 _salt = "HUB5";
         HUBSource _HUBSource = new HUBSource{salt: _salt}();
         HUBDestination _HUBDestination = new HUBDestination{salt: _salt}();
 

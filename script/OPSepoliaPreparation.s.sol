@@ -16,9 +16,9 @@ contract OPSepoliaPreparationScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0x2db63ba5F9101F5017a33922AE1c3C329e516625;
-        // address _HUBDestination = 0xb0E99cd4B72564Df11aDCcB3902E7C91a20A782E;
-        address OPSepolia_WETH = 0xa375fEfcA27a639361139718145dffc29A44cB6d;
+        address _HUBSource = 0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1;
+        // address _HUBDestination = 0xAC639a69B329A01E727188f8d90ECeA3f6189243;
+        address OPSepolia_WETH = 0x74A4A85C611679B73F402B36c0F84A7D2CcdFDa3;
 
         IERC20(OPSepolia_WETH).approve(_HUBSource, type(uint).max);
 

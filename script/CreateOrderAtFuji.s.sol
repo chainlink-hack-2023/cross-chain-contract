@@ -15,7 +15,7 @@ contract CreateOrderAtFujiScript is Script {
         address deployerAddress = vm.addr(deployerPrivateKey);
         console.log("Caller: ", deployerAddress);
         vm.startBroadcast(deployerPrivateKey);
-        address _HUBSource = 0x2db63ba5F9101F5017a33922AE1c3C329e516625;
+        address _HUBSource = 0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1;
         address FUJI_LINK = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         address MUMBAI_USDC = 0x0FA8781a83E46826621b3BC094Ea2A0212e71B23;
 
