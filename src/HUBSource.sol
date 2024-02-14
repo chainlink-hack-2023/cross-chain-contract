@@ -162,6 +162,27 @@ contract HUBSource is HUBBase {
         );
     }
 
+    function onCrossMessageReceived(
+        uint64 _targetChainSelector,
+        bytes32 _orderHash, 
+        address _takerAddress,
+        uint128 _takerAmount, 
+        address _takerAsset
+    ) public payable {
+        uint128 _errorCode = _executeMessageReceived(_targetChainSelector, _orderHash, _takerAddress, _takerAmount, _takerAsset);
+
+        emit TargetMessageReceived(
+            "",
+            uint64(_targetChainSelector),
+            address(0),
+            _orderHash, 
+            _takerAddress,
+            _takerAmount,
+            _takerAsset,
+            _errorCode
+        );
+    }
+
     // receive message process
     function _executeMessageReceived(uint64 _targetChainSelector, bytes32 _orderHash, address _takerAddress, uint128 _takerAmount, address _takerAsset) internal returns (uint128 _errorCode) {
         LibOrder.Order storage _order = orders[_orderHash];

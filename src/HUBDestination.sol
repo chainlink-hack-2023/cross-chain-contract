@@ -96,6 +96,8 @@ contract HUBDestination is HUBBase {
         // fuji 43113
         if ((sourceChainId == 80001) || (sourceChainId == 43113)) {
             _ccipMessageSend(_orderHash, takerAmount, takerAsset, sourceChainId);
+        } else if ((sourceChainId == 11155420) || (sourceChainId == 11155111)) {
+            _OPMessageSend(_orderHash, takerAmount, takerAsset, sourceChainId);
         } else {
             _zkBridgeMessageSend(_orderHash, takerAmount, takerAsset, sourceChainId);
         }
@@ -143,51 +145,36 @@ contract HUBDestination is HUBBase {
         emit FilledOrder(_orderHash, msg.sender, _takerAmount, _takerAsset, _sourceChainId, "");
     }
 
+    function _OPMessageSend(
+        bytes32 _orderHash, 
+        uint128 _takerAmount, 
+        address _takerAsset,
+        uint32 _sourceChainId
+    ) internal {
+        uint64 sourceCCIPChainSelector = chainSelectors[_sourceChainId];
+
+        MESSENGER.sendMessage(
+            RECEIVER,
+            abi.encodeCall(
+                this.onCrossMessageReceived,
+                (
+                    sourceCCIPChainSelector,
+                    _orderHash, 
+                    msg.sender, 
+                    _takerAmount, 
+                    _takerAsset
+                )
+            ),
+            1000000
+        );
+
+        emit FilledOrder(_orderHash, msg.sender, _takerAmount, _takerAsset, _sourceChainId, "");
+    }
+
     // // CCIP receive message callback
     function _ccipReceive(Client.Any2EVMMessage memory message) internal override {
         return;
     }
-    // function _ccipReceive(
-    //     Client.Any2EVMMessage memory message
-    // ) internal override {
-    //     bytes32 _messageId = message.messageId;
-    //     uint64 _sourceChainSelector = message.sourceChainSelector;
-    //     address _sourceHUBAddress = abi.decode(message.sender, (address));
-    //     (address _maker, uint128 _releaseAmount, address _takerAsset, uint128 _errorCode) = abi.decode(message.data, (address, uint128, address, uint128));
-
-    //     _executeMessageReceived(_maker, _releaseAmount, _takerAsset, _errorCode);
-
-    //     emit SourceMessageReceived(
-    //         _messageId,
-    //         _sourceChainSelector,
-    //         _sourceHUBAddress,
-    //         _maker, 
-    //         _releaseAmount,
-    //         _takerAsset,
-    //         _errorCode
-    //     );
-    // }
-
-    // // polygonZkEVMBridge receive message callback
-    // function onMessageReceived(
-    //     address _sourceHUBAddress,
-    //     uint32 _sourceChainSelector,
-    //     bytes memory data
-    // ) external payable override {
-    //     (address _maker, uint128 _releaseAmount, address _takerAsset, uint128 _errorCode) = abi.decode(data, (address, uint128, address, uint128));
-
-    //     _executeMessageReceived(_maker, _releaseAmount, _takerAsset, _errorCode);
-        
-    //     emit SourceMessageReceived(
-    //         "",
-    //         uint64(_sourceChainSelector),
-    //         _sourceHUBAddress,
-    //         _maker, 
-    //         _releaseAmount,
-    //         _takerAsset,
-    //         _errorCode
-    //     );
-    // }
 
     function onMessageReceived(
         address originAddress,
@@ -196,26 +183,14 @@ contract HUBDestination is HUBBase {
     ) external payable {
         return;
     }
-    
-    // function _executeMessageReceived(address _maker, uint128 _releaseAmount, address _takerAsset, uint128 _errorCode) internal {
-    //     if (_errorCode != 0) {
-    //         if (_errorCode == 1) {
-    //             // Wrong target chain id or order not exist.
-    //             revert WrongTargetOrOrderNotExist();
-    //         } else if (_errorCode == 2) {
-    //             // Wrong taker address
-    //             revert WrongTaker();
-    //         } else if (_errorCode == 3) {
-    //             // Wrong taker token
-    //             revert WrongTakerAsset();
-    //         } else if (_errorCode == 4) {
-    //             // Order filled
-    //             revert OrderFiled();
-    //         }
-    //     }
-        
-    //     // release token to taker
-    //     IERC20(_takerAsset).transfer(_maker, _releaseAmount);
-    //     totalTakerAmount[_takerAsset] -= uint256(_releaseAmount);
-    // }
+
+    function onCrossMessageReceived(
+        uint64 _targetChainSelector,
+        bytes32 _orderHash, 
+        address _takerAddress,
+        uint128 _takerAmount, 
+        address _takerAsset
+    ) external payable {
+        return;
+    }
 }

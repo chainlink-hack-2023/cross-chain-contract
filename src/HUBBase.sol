@@ -11,6 +11,9 @@ import "./interfaces/IPolygonZkEVMBridge.sol";
 import "./interfaces/IBridgeMessageReceiver.sol";
 import {CCIPReceiver} from "src/base/CCIPReceiver.sol";
 
+import "./interfaces/ICrossDomainMessenger.sol";
+import "./interfaces/ICrossDomainReceiver.sol";
+
 abstract contract HUBBase is SecurityBase, CCIPReceiver, IBridgeMessageReceiver {
     /* ========== STATE VARIABLES ========== */
     // orderHash => LibOrder.OrderInfo
@@ -26,6 +29,10 @@ abstract contract HUBBase is SecurityBase, CCIPReceiver, IBridgeMessageReceiver 
 
     // Global Exit Root address
     IPolygonZkEVMBridge public polygonZkEVMBridge;
+
+    // OP MESSAGER and RECEIVER
+    ICrossDomainMessenger public  MESSENGER;
+    address public RECEIVER;
 
     /* ========== CONSTRUCTOR  ========== */
 
@@ -46,7 +53,10 @@ abstract contract HUBBase is SecurityBase, CCIPReceiver, IBridgeMessageReceiver 
         chainSelectors[_chianId] = _chainSelectors;
     }
 
-
+    function setMessagerAndReceiver(address _messenger, address _receiver) onlyOwner() external {
+        MESSENGER = ICrossDomainMessenger(_messenger);
+        RECEIVER = _receiver;
+    }
 
     /* ========== INTERNAL ========== */
     

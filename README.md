@@ -30,13 +30,21 @@ forge test -vvv
 6. Check CCIP status at https://ccip.chain.link/ with fulfill order TX
 
 ## LYLX onchain test steps
-1. Do Preparation at ZkEVM for maker (Approve Sender's GOERLI_USDC to HUBDestination)
-2. Do Preparation at Goerli for taker (Approve sender's ZkEVM_LINK to HUBSource)
+1. Do Preparation at Goerli for maker (Approve Sender's GOERLI_USDC to HUBSource)
+2. Do Preparation at ZkEVM for taker (Approve sender's ZkEVM_LINK to HUBDestination)
 3. Create Order at ZkEVM for maker
 4. If parameters changed in CreateOrderAtZkEVM, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtGoerli.s.sol
 5. Fulfill Order at Goerli for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtGoerli.s.sol)
 6. Check bridge status by https://bridge-api.public.zkevm-test.net/bridges/<HUDSource>
 7. Claim by: `node ./script/ZkEVMClaimSource.js`
+
+## Sepolia->OP Sepolia onchain test steps
+1. Do Preparation at Sepolia for maker (Approve Sender's Sepolia_USDC to HUBSource)
+2. Do Preparation at OPSepolia for taker (Approve sender's OPSepolia_WETH to HUBDestination)
+3. Create Order at Sepolia for maker
+4. If parameters changed in CreateOrderAtSepolia, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtOPSepolia.s.sol
+5. Fulfill Order at OPSepolia for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtGoerli.s.sol)
+
 
 # Deploy
 ## Deploy to Mumbai
@@ -58,6 +66,16 @@ forge script script/DeployHUBToZkEVM.s.sol:HUBScript --fork-url https://rpc.publ
 ```
 export PRIVATE_KEY=
 forge script script/DeployHUBToGoerli.s.sol:HUBScript --fork-url https://rpc.ankr.com/eth_goerli --broadcast --legacy
+```
+## Deploy Sepolia
+```
+export PRIVATE_KEY=
+forge script script/DeployHUBToSepolia.s.sol:HUBScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+```
+## Deploy OPSepolia
+```
+export PRIVATE_KEY=
+forge script script/DeployHUBToOPSepolia.s.sol:HUBScript --fork-url https://sepolia.optimism.io --broadcast --legacy
 ```
 
 # Deploy Permit2 to PolygonZkEVM
@@ -103,6 +121,18 @@ forge script script/CreateOrderAtZkEVM.s.sol:CreateOrderAtZkEVMScript --fork-url
 ```
 export PRIVATE_KEY=
 forge script script/FulfilOrderAtGoerli.s.sol:FulfilOrderAtGoerliScript --fork-url https://rpc.ankr.com/eth_goerli --broadcast --legacy
+```
+
+## Create Order at Sepolia
+```
+export PRIVATE_KEY=
+forge script script/CreateOrderAtSepolia.s.sol:CreateOrderAtSepoliaScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+```
+
+## Fulfill Order at OPSepolia
+```
+export PRIVATE_KEY=
+forge script script/FulfilOrderAtOPSepolia.s.sol:FulfilOrderAtOPSepoliaScript --fork-url https://sepolia.optimism.io --broadcast --legacy
 ```
 
 ## Token Approve at Fuji
@@ -151,6 +181,17 @@ forge script script/GoerliPreparation.s.sol:GoerliPreparationScript --fork-url h
 ```
 export PRIVATE_KEY=
 forge script script/ZkEVMPreparation.s.sol:ZkEVMPreparationScript --fork-url https://rpc.public.zkevm-test.net --broadcast --legacy
+```
+
+## Preparation at Sepolia
+```
+export PRIVATE_KEY=
+forge script script/SepoliaPreparation.s.sol:SepoliaPreparationScript --fork-url https://sepolia.gateway.tenderly.co --broadcast --legacy
+```
+## Preparation at OPSepolia
+```
+export PRIVATE_KEY=
+forge script script/OPSepoliaPreparation.s.sol:OPSepoliaPreparationScript --fork-url https://sepolia.optimism.io --broadcast --legacy
 ```
 
 ## ExecuteMessageReceivedAtFuji
