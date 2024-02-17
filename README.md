@@ -69,6 +69,12 @@ export PRIVATE_KEY=2a605169e564
 forge script script/FulfilOrderAtSepoliaToBlastSepolia.s.sol:FulfilOrderAtSepoliaToBlastSepoliaScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
 ```
 
+# Auto create order and fufill order
+Update date makerPrivateKey and takerPrivateKey and execute command:
+```
+node ./script/autoCreateOrderAtBlastSepoliaAndFullfillOrderAtSepolia.js
+```
+The time interval now is 120s, it can be udpated.
 
 
 # Deploy
