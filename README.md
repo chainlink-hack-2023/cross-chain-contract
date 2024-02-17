@@ -45,6 +45,31 @@ forge test -vvv
 4. If parameters changed in CreateOrderAtOPSepolia, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtSepolia.s.sol
 5. Fulfill Order at Sepolia for taker (If maker is different from *0x3C53E585FDbDB1067B94985377582D7712dF4884*, update the maker address at FulfilOrderAtSepolia.s.sol)
 
+## Sepolia->OP Sepolia onchain test steps
+### Preparation at BlastSepolia
+```
+export PRIVATE_KEY=A60952cf7b
+forge script script/BlastSepoliaPreparation.s.sol:BlastSepoliaPreparationScript --fork-url https://sepolia.blast.io --broadcast --legacy
+```
+### Preparation at SepoliaToBlastSepolia
+```
+export PRIVATE_KEY=2a605169e564
+forge script script/SepoliaToBlastSepoliaPreparation.s.sol:SepoliaToBlastSepoliaPreparationScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
+```
+
+### Create Order at BlastSepolia
+```
+export PRIVATE_KEY=A60952cf7b
+forge script script/CreateOrderAtBlastSepolia.s.sol:CreateOrderAtBlastSepoliaScript --fork-url https://sepolia.blast.io --broadcast --legacy
+```
+4. If parameters changed in CreateOrderAtOPSepolia, get _orderHash from TX log and update the new _orderHash in FulfilOrderAtSepolia.s.sol
+### Fulfill Order at SepoliaToBlastSepolia
+```
+export PRIVATE_KEY=2a605169e564
+forge script script/FulfilOrderAtSepoliaToBlastSepolia.s.sol:FulfilOrderAtSepoliaToBlastSepoliaScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
+```
+
+
 
 # Deploy
 ## Deploy to Mumbai
@@ -76,6 +101,16 @@ forge script script/DeployHUBToSepolia.s.sol:HUBScript --fork-url https://eth-se
 ```
 export PRIVATE_KEY=
 forge script script/DeployHUBToOPSepolia.s.sol:HUBScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
+```
+## Deploy SepoliaToBlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/DeployHUBToSepoliaToBlastSepolia.s.sol:HUBScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
+```
+## Deploy BlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/DeployHUBToBlastSepolia.s.sol:HUBScript --fork-url https://sepolia.blast.io --broadcast --legacy
 ```
 
 # Deploy Permit2 to PolygonZkEVM
@@ -133,6 +168,17 @@ forge script script/CreateOrderAtOPSepolia.s.sol:CreateOrderAtOPSepoliaScript --
 ```
 export PRIVATE_KEY=
 forge script script/FulfilOrderAtSepolia.s.sol:FulfilOrderAtSepoliaScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
+```
+## Create Order at BlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/CreateOrderAtBlastSepolia.s.sol:CreateOrderAtBlastSepoliaScript --fork-url https://sepolia.blast.io --broadcast --legacy
+```
+
+## Fulfill Order at SepoliaToBlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/FulfilOrderAtSepoliaToBlastSepolia.s.sol:FulfilOrderAtSepoliaToBlastSepoliaScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
 ```
 
 ## Token Approve at Fuji
@@ -193,7 +239,16 @@ forge script script/SepoliaPreparation.s.sol:SepoliaPreparationScript --fork-url
 export PRIVATE_KEY=
 forge script script/OPSepoliaPreparation.s.sol:OPSepoliaPreparationScript --fork-url https://optimism-sepolia.blockpi.network/v1/rpc/public --broadcast --legacy
 ```
-
+## Preparation at SepoliaToBlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/SepoliaToBlastSepoliaPreparation.s.sol:SepoliaToBlastSepoliaPreparationScript --fork-url https://eth-sepolia.api.onfinality.io/public --broadcast --legacy
+```
+## Preparation at BlastSepolia
+```
+export PRIVATE_KEY=
+forge script script/BlastSepoliaPreparation.s.sol:BlastSepoliaPreparationScript --fork-url https://sepolia.blast.io --broadcast --legacy
+```
 ## ExecuteMessageReceivedAtFuji
 ```
 export PRIVATE_KEY=
@@ -437,4 +492,20 @@ https://github.com/sydweb3/cow-sdk/blob/main/networks.json
   0xf3A3a9e66a4765bCee90bC7DCb6b164a5e12b1B1
   deployed HUBDestination Address:
   0xAC639a69B329A01E727188f8d90ECeA3f6189243
+```
+
+## HUB Version22
+### SepoliaToBlastSepolia
+```
+  deployed HUBSource Address:
+  0x95f0e48e5f8f946B742A7D5379906f8Fc04abb01
+  deployed HUBDestination Address:
+  0x7742b2C9cca5E9558e93474be5f825dF6707B5c2
+```
+### BlastSepolia
+```
+  deployed HUBSource Address:
+  0x95f0e48e5f8f946B742A7D5379906f8Fc04abb01
+  deployed HUBDestination Address:
+  0x7742b2C9cca5E9558e93474be5f825dF6707B5c2
 ```
